@@ -11,5 +11,5 @@ sudo ifconfig $inter $ip netmask $mask up ;
 sudo route add default gw $puerta 
 echo "nameserver $dns" | sudo tee /etc/resolv.conf
 #comprobando confi
-echo -e "\n comprobando la configuracion\n"
+echo -e "comprobando la configuracion"
 ip -brief addr show && ip route show default && grep nameserver /etc/resolv.conf
