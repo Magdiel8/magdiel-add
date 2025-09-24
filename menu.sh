@@ -2,7 +2,7 @@
 #variable para la ruta de los scripts
 dir_scr="$(dirname"$0")scripts"
 #menu 
-while true; do
+while true; do # no puedes ser while true
    clear
    echo "====MENU PRINCIPAL===="
    echo " 1) Bisiesto"
