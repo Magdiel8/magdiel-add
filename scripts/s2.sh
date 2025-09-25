@@ -6,7 +6,7 @@ read -p "ingresa la mascara: " mask
 read -p "ingresa la puerta de enlace: " puerta
 read -p "ingresa el dns: " dns
 
-#aplicar los parametros
+#aplicar los parametros   #arreglar
 sudo ifconfig $inter $ip netmask $mask up ;
 sudo route add default gw $puerta 
 echo "nameserver $dns" | sudo tee /etc/resolv.conf

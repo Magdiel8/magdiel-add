@@ -8,7 +8,7 @@ while [ $opcion -ne 0 ]; do
    echo "====MENU PRINCIPAL===="
    echo " 1) Bisiesto"
    echo " 2) configuracion de red"
-    echo " 3) Adivina el numero"
+   echo " 3) Adivina el numero"
    echo " 0) Salir"
    echo "======================"
    read -p " elige opcion: " opcion
