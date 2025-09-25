@@ -1,8 +1,9 @@
 #!/bin/bash
 #variable para la ruta de los scripts
-dir_scr="$(dirname"$0")scripts"
+dir_scr="$(dirname "$0")/scripts"
 #menu 
-while true; do # no puedes ser while true
+opcion=-1
+while [ $opcion -ne 0 ]; do
    clear
    echo "====MENU PRINCIPAL===="
    echo " 1) Bisiesto"
