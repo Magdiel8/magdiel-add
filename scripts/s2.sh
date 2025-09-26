@@ -7,9 +7,11 @@ read -p "ingresa la puerta de enlace: " puerta
 read -p "ingresa el dns: " dns
 
 #aplicar los parametros
-sudo ifconfig $inter $ip netmask $mask up ;
-sudo route add default gw $puerta 
-echo "nameserver $dns" | sudo tee /etc/resolv.conf
+sudo ip addr flush dev $inter
+sudo ip addr add $ip/$mask dev $inter
+sudo ip link set $inter up
+sudo ip route add default via $puerta dev $inter
+echo "nameserver $dns" | sudo tee -a /etc/resolv.conf
 #comprobando confi
 echo -e "comprobando la configuracion"
 ip -brief addr show && ip route show default && grep nameserver /etc/resolv.conf
