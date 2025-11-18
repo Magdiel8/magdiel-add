@@ -1,9 +1,4 @@
-﻿# =============================================================================
-# Nombre del Script: nombresp31-3eve.ps1
-# Descripción: Menú dinámico de logs. Muestra los 12 últimos eventos del tipo elegido.
-# =============================================================================
 
-# Obtenemos la lista de logs disponibles en ESTE sistema
 # Esto hace que el menú sirva para cualquier ordenador
 $logsDisponibles = Get-EventLog -List
 
@@ -57,5 +52,6 @@ do {
         Write-Host "Opción no válida. Por favor, introduce un número del menú."
         Start-Sleep -Seconds 2
     }
+
 
 } until ($opcion -eq "0")
