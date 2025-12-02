@@ -43,9 +43,9 @@ function Pizza {
 }
 
 #mostrar menu
-
-do {
-    MostrarMenu
+$opcion = ""
+while ($opcion -ne "0" ) {
+   
     $opcion = Read-Host "Elige una opción (0-30)"
     switch ($opcion) {
         "1" {
@@ -65,4 +65,4 @@ do {
             Write-Host "Opción no válida. Intenta de nuevo."
         }
     }
-} while ($opcion -ne "0")
+} 
