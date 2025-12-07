@@ -12,8 +12,9 @@ if ($args -contains "--dry-run") {
     Write-Host "************************************************"
 }
 
-# Filtrar los argumentos para quedarse solo con el nombre del fichero (quitamos --dry-run)
-$argsLimpios = $args | Where-Object { $_ -ne "--dry-run" }
+# --- CORRECCIÓN AQUÍ ---
+# Usamos @(...) para forzar que sea una lista, incluso si solo queda un elemento.
+$argsLimpios = @($args | Where-Object { $_ -ne "--dry-run" })
 
 if ($argsLimpios.Count -ne 1) {
     Write-Host "Error: Faltan parametros."
