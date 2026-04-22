@@ -1,0 +1,106 @@
+# Ruta del dominio
+$dn = (Get-ADDomain).DistinguishedName
+
+function Menu {
+    # Limpia la pantalla
+    Clear-Host
+    Write-Host "==========================================" -ForegroundColor Cyan
+    Write-Host "   GESTOR DE AD - MAGDIEL.AWS (PRO)      " -ForegroundColor Cyan
+    Write-Host "==========================================" -ForegroundColor Cyan
+    "1. Info Dominio"
+    "2. Crear OU"
+    "3. Ver Miembros OU"
+    "4. Crear Grupo"
+    "5. Crear Usuario"
+    "0. Salir"
+    Write-Host "==========================================" -ForegroundColor Cyan
+    $opc = Read-Host "Seleccione Opcion"
+
+    switch ($opc) {
+        "1" {
+            # Muestra datos dominio
+            $dom = Get-ADDomain
+            Write-Host "`n--- INFORMACION ---" -ForegroundColor Yellow
+            "Equipo: $env:COMPUTERNAME"
+            "Dominio: $($dom.DNSRoot)"
+            "OUs: $((Get-ADOrganizationalUnit -Filter *).Count)"
+            "Grupos: $((Get-ADGroup -Filter *).Count)"
+            "Usuarios: $((Get-ADUser -Filter *).Count)" | Out-Host
+            Pause
+            # Regresa al menú
+            Menu
+        }
+        "2" {
+            # Crea la OU
+            $n = Read-Host "Nombre de la nueva OU"
+            try {
+                New-ADOrganizationalUnit -Name $n -Path $dn -ErrorAction Stop
+                Write-Host "Exito: OU creada." -ForegroundColor Green
+            } catch {
+                # Error en OU
+                Write-Host "Error: Ya existe." -ForegroundColor Yellow
+            }
+            Pause
+            Menu
+        }
+        "3" {
+            # Busca miembros OU
+            $n = Read-Host "Nombre de la OU"
+            try {
+                Get-ADObject -Filter * -SearchBase "OU=$n,$dn" -ErrorAction Stop | select Name, ObjectClass | Out-Host
+            } catch {
+                # Fallo de búsqueda
+                Write-Host "Error: No existe." -ForegroundColor Yellow
+            }
+            Pause
+            Menu
+        }
+        "4" {
+            # Crea el grupo
+            $n = Read-Host "Nombre del grupo"
+            try {
+                New-ADGroup -Name $n -GroupScope Global -GroupCategory Security -ErrorAction Stop
+                Write-Host "Exito: Grupo creado." -ForegroundColor Green
+            } catch {
+                # Fallo en grupo
+                Write-Host "Error: Ya existe." -ForegroundColor Yellow
+            }
+            Pause
+            Menu
+        }
+        "5" {
+            # Datos de usuario
+            $u = Read-Host "Login"
+            $n = Read-Host "Nombre Completo"
+            $p = Read-Host "Password" -AsSecureString
+            $g = Read-Host "Grupo"
+            
+            try {
+                # Intenta crear usuario
+                New-ADUser -Name $n -SamAccountName $u -AccountPassword $p -Enabled $true -ChangePasswordAtLogon $true -ErrorAction Stop
+                # Añade al grupo
+                Add-ADGroupMember -Identity $g -Members $u -ErrorAction Stop
+                Write-Host "Exito: Usuario creado." -ForegroundColor Green
+            } catch {
+                # Controla errores complejos
+                Write-Host "`n[!] FALLO AL CREAR" -ForegroundColor Red
+                Write-Host "Revise: Usuario duplicado, grupo inexistente o password simple." -ForegroundColor Yellow
+            }
+            Pause
+            Menu
+        }
+        "0" { 
+            # Finaliza el script
+            Write-Host "Saliendo..." -ForegroundColor Magenta 
+        }
+        Default { 
+            # Opción no reconocida
+            Write-Host "No valido." -ForegroundColor Red
+            Pause
+            Menu 
+        }
+    }
+}
+
+# Inicia el script
+Menu
